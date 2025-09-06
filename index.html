@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOULS UNTOLD - Eclipse Foundry</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #070709;
+            --card: #0f1115;
+            --accent: #d88a5b;
+            --accent-2: #e63946;
+            --muted: #9aa0a6;
+            --glass: rgba(10,10,14,0.45);
+            --glass-strong: rgba(8,8,10,0.85);
+            --max-width: 1200px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: #e6e6e6;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 0 20px; }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(180deg, rgba(6,6,8,0.9), rgba(6,6,8,0.7));
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            z-index: 1000;
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .logo-text h1 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent);
+            font-size: 1.5rem;
+            letter-spacing: 2px;
+        }
+
+        .studio-name {
+            font-size: 0.8rem;
+            color: var(--muted);
+            font-weight: 300;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #fff;
+            background: rgba(255,255,255,0.1);
+            transform: translateY(-2px);
+        }
+
+        /* Pages */
+        .page {
+            display: none;
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .page.active { display: block; }
+
+        /* Hero Section */
+        .hero {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 3rem;
+            align-items: center;
+            padding: 2rem 0 4rem;
+            position: relative;
+        }
+
+        .hero-content h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+            line-height: 1.1;
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--muted);
+            margin-bottom: 2rem;
+            max-width: 600px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #b86b3f);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .hero-panel {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-panel h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
+        .panel-image {
+            width: 100%;
+            height: 250px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 1rem;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .stat {
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--muted);
+        }
+
+        /* Content Sections */
+        .content-section {
+            padding: 4rem 0;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            color: var(--accent);
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 15px;
+            padding: 2rem;
+            border: 1px solid rgba(255,255,255,0.1);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+        }
+
+        .card h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--accent-2);
+            margin-bottom: 1rem;
+        }
+
+        .card p {
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* Boss Table */
+        .boss-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card);
+            border-radius: 15px;
+            overflow: hidden;
+            margin: 2rem 0;
+        }
+
+        .boss-table th,
+        .boss-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .boss-table th {
+            background: rgba(216, 138, 91, 0.2);
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .boss-table tr:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .drop-chance {
+            color: var(--accent-2);
+            font-weight: bold;
+        }
+
+        .lore-text {
+            font-style: italic;
+            color: var(--muted);
+        }
+
+        /* World Map */
+        .world-map {
+            text-align: center;
+            padding: 2rem;
+            background: var(--card);
+            border-radius: 15px;
+            margin: 2rem 0;
+        }
+
+        .world-map img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: var(--muted);
+            margin-top: 4rem;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+            margin: 0 1rem;
+        }
+
+        footer a:hover {
+            color: #fff;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+            
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Fog effect */
+        .fog-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <canvas class="fog-canvas" id="fogCanvas"></canvas>
+    
+    <nav>
+        <div class="container nav-container">
+            <div class="logo">
+                <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTAiIGhlaWdodD0iNTAiIHZpZXdCb3g9IjAgMCA1MCA1MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMjUiIGN5PSIyNSIgcj0iMjAiIGZpbGw9IiNkODhhNWIiIG9wYWNpdHk9IjAuMyIvPgo8cGF0aCBkPSJNMjUgNUMyNSA1IDQwIDEwIDQwIDI1QzQwIDQwIDM1IDQ1IDI1IDQ1QzE1IDQ1IDEwIDQwIDEwIDI1QzEwIDEwIDI1IDUgMjUgNVoiIGZpbGw9IiNkODhhNWIiLz4KPC9zdmc+Cg==" alt="Eclipse Foundry Logo">
+                <div class="logo-text">
+                    <h1>SOULS UNTOLD</h1>
+                    <div class="studio-name">Eclipse Foundry</div>
+                </div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')" class="nav-link active">Home</a></li>
+                <li><a href="#" onclick="showPage('lore')" class="nav-link">História</a></li>
+                <li><a href="#" onclick="showPage('world')" class="nav-link">Mundo</a></li>
+                <li><a href="#" onclick="showPage('bosses')" class="nav-link">Bosses</a></li>
+                <li><a href="#" onclick="showPage('gameplay')" class="nav-link">Gameplay</a></li>
+                <li><a href="#" onclick="showPage('studio')" class="nav-link">Studio</a></li>
+                <li><a href="#" onclick="showPage('news')" class="nav-link">News</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- HOME PAGE -->
+        <div id="home" class="page active">
+            <section class="hero">
+                <div class="hero-content fade-in">
+                    <h1>SOULS UNTOLD</h1>
+                    <p>Um mundo corrompido pelos ecos. Explore fragmentos da Espiral, absorva memórias e descubra a verdade por trás da sua própria criação.</p>
+                    
+                    <div class="hero-buttons">
+                        <a href="#" class="btn btn-primary" onclick="playClick()">Assistir Trailer</a>
+                        <a href="#" class="btn btn-secondary" onclick="playClick()">Jogar Demo</a>
+                    </div>
+                    
+                    <p style="font-size: 0.9rem; color: var(--muted);">
+                        Dica: use fones para a experiência sonora completa.
+                    </p>
+                </div>
+                
+                <div class="hero-panel fade-in">
+                    <h3>Informações do Jogo</h3>
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==" alt="Game Screenshot" class="panel-image" style="background: linear-gradient(45deg, #1a1a1a, #2a2a2a); display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 14px;">
+                    
+                    <div class="stats">
+                        <div class="stat">
+                            <div class="stat-value">0.9.2</div>
+                            <div class="stat-label">Versão</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">8+</div>
+                            <div class="stat-label">Regiões</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">8</div>
+                            <div class="stat-label">Bosses</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="content-section">
+                <h2 class="section-title">Destaques do Jogo</h2>
+                <div class="cards-grid">
+                    <div class="card fade-in">
+                        <h3>Narrativa Sombria</h3>
+                        <p>Uma história profunda sobre ecos, memórias e a natureza da existência em um mundo corrompido pela Espiral dos Deuses.</p>
+                    </div>
+                    <div class="card fade-in">
+                        <h3>Combate Desafiante</h3>
+                        <p>Sistema de combate skill-based com bosses únicos que alteram permanentemente o mundo do jogo.</p>
+                    </div>
+                    <div class="card fade-in">
+                        <h3>Mundo Interconectado</h3>
+                        <p>Explore 8+ regiões distintas, cada uma com seus próprios segredos, NPCs dinâmicos e consequências globais.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- LORE PAGE -->
+        <div id="lore" class="page">
+            <section class="content-section">
+                <h2 class="section-title">LORE - A História de SOULS UNTOLD</h2>
+                
+                <div class="cards-grid">
+                    <div class="card fade-in">
+                        <h3>A Espiral dos Deuses</h3>
+                        <p>Uma prisão criada para guardar os pecados da humanidade. Sua ruptura espalhou fragmentos pelo mundo — cada fragmento trouxe memórias, dor e monstros que assombram a realidade.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>A Maldição dos Ecos</h3>
+                        <p>Todo ser vivo, ao morrer, deixa um eco — uma sombra de si, cheia de dor e lembranças. O protagonista é um Eco que possui a habilidade única de absorver e processar essas memórias fragmentadas.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Os Três Finais</h3>
+                        <p><strong>Aceitar a Espiral:</strong> Torne-se guardião das memórias.<br>
+                        <strong>Quebrar a Espiral:</strong> Liberte o mundo, mas destrua as memórias.<br>
+                        <strong>Eco Eterno:</strong> Transcenda a mortalidade, mas perca sua humanidade.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>As Origens do Protagonista</h3>
+                        <p>Você desperta sem memórias próprias, apenas fragmentos roubados de outros. Cada região explorada revela mais sobre sua verdadeira natureza e o propósito por trás de sua criação.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>O Ciclo Eterno</h3>
+                        <p>O mundo já passou por inúmeros ciclos de destruição e renascimento. Cada playthrough revela pistas sobre civilizações anteriores e as consequências das escolhas passadas.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Forgotten Spire</h3>
+                        <p>A torre central onde tudo começou e onde tudo deve terminar. É aqui que o jogador enfrenta "Outro Você" - uma batalha que usa todas as memórias coletadas durante a jornada.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- WORLD PAGE -->
+        <div id="world" class="page">
+            <section class="content-section">
+                <h2 class="section-title">O MUNDO - Regiões da Espiral</h2>
+                
+                <div class="world-map">
+                    <h3>Mapa das Regiões</h3>
+                    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==" alt="Mapa das Regiões" style="background: linear-gradient(45deg, #1a1a1a, #2a2a2a); width: 600px; height: 400px; display: flex; align-items: center; justify-content: center; color: var(--muted); margin: 0 auto;">
+                    <p>Clique nas regiões para descobrir segredos, bosses e alterações de mundo.</p>
+                </div>
+                
+                <div class="cards-grid">
+                    <div class="card fade-in">
+                        <h3>Ruínas Abissais</h3>
+                        <p>Templos inundados onde as águas sussurram segredos antigos. Inimigos aquáticos usam correntes e marés como armas. O Guardião das Marés reside aqui, controlando o nível das águas em todo o mundo.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Cidade Afundada de Elarion</h3>
+                        <p>Uma metrópole submersa onde ecos de sinos revelam fragmentos do passado. Ruas alagadas escondem tesouros e NPCs espectrais que oferecem negócios sombrios.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Floresta do Crepúsculo</h3>
+                        <p>Ciclos dinâmicos de dia/noite alteram completamente a jogabilidade. Criaturas noturnas são mais perigosas, mas oferecem recompensas únicas. A flora reage à presença de ecos.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Crimson Bastion</h3>
+                        <p>Fortaleza militar de cavaleiros espectrais. Ambiente brutal com consequências globais ao ser conquistada. O Rei de Sangue comanda legiões que mudam de tática baseado em suas ações.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Canyon of Silence</h3>
+                        <p>Desfiladeiros onde o som não existe. A comunicação com NPCs torna-se visual, e inimigos silenciosos surgem das sombras. Ecos antigos ficam presos nas rochas.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Garden of Silence</h3>
+                        <p>Um jardim paradoxal onde plantas carnívoras crescem em solo sagrado. Flores que cantam lamentos atraem tanto aliados quanto inimigos. Centro de rituais de purificação.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Rumon of Ashes</h3>
+                        <p>Planícies queimadas onde cinzas dançam no vento carregando memórias de batalhas antigas. Fantasmas de guerreiros emergem das cinzas durante tempestades.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Forgotten Spire</h3>
+                        <p>A torre central onde tudo converge. Cada andar representa uma camada diferente da realidade. É aqui que o jogador enfrenta suas próprias memórias fragmentadas no confronto final.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- BOSSES PAGE -->
+        <div id="bosses" class="page">
+            <section class="content-section">
+                <h2 class="section-title">BOSSES LENDÁRIOS - Wiki Completa</h2>
+                
+                <div class="card">
+                    <h3 style="text-align: center; margin-bottom: 2rem;">Tabela de Bosses e Drops</h3>
+                    
+                    <table class="boss-table">
+                        <thead>
+                            <tr>
+                                <th>Boss</th>
+                                <th>Arma/Magia</th>
+                                <th>Lore</th>
+                                <th>Drop Chance</th>
+                                <th>Efeito</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Guardião das Marés</strong></td>
+                                <td style="color: var(--accent);">Tridente do Naufrágio</td>
+                                <td class="lore-text">Forjado nas correntes que arrastaram navios para o abismo.</td>
+                                <td class="drop-chance">12%</td>
+                                <td>Golpes criam ondas que empurram inimigos e drenam stamina.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Arauto do Vácuo</strong></td>
+                                <td style="color: var(--accent);">Mão do Abismo (Feitiço)</td>
+                                <td class="lore-text">Sua mão tornou-se vazio — suga e liga memórias ao caster.</td>
+                                <td class="drop-chance">8%</td>
+                                <td>Puxa inimigos para você e aplica lentidão; pode roubar um eco por acerto.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Dama das Flores Mortas</strong></td>
+                                <td style="color: var(--accent);">Coroa das Mil Vozes</td>
+                                <td class="lore-text">A coroa contém os lamentos das almas sacrificadas em sua beleza.</td>
+                                <td class="drop-chance">5%</td>
+                                <td>Ativa um grito que apavora inimigos (com chance de atordoamento).</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Colosso de Pedra</strong></td>
+                                <td style="color: var(--accent);">Espada Quebraterra</td>
+                                <td class="lore-text">Forjada com rochas de montanhas que esmagaram exércitos.</td>
+                                <td class="drop-chance">15%</td>
+                                <td>Impacto no chão cria fissura linear que danifica em linha reta.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Serpente Dracônica</strong></td>
+                                <td style="color: var(--accent);">Sopro Escarlate (Magia)</td>
+                                <td class="lore-text">Hálito de fogo e sangue, legado de rituais que alimentam o dragão.</td>
+                                <td class="drop-chance">4%</td>
+                                <td>Cone de fogo que aplica dano ao longo do tempo.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Carcereiro</strong></td>
+                                <td style="color: var(--accent);">Correntes da Danação</td>
+                                <td class="lore-text">Correntes que aprisionaram milhões tornaram-se armamento.</td>
+                                <td class="drop-chance">10%</td>
+                                <td>Puxa inimigos e reduz mobilidade; pode imobilizar por período.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Rei de Sangue</strong></td>
+                                <td style="color: var(--accent);">Lâmina do Trono Manchado</td>
+                                <td class="lore-text">Forjada com o sangue de súditos traídos e templada em lágrimas.</td>
+                                <td class="drop-chance">7%</td>
+                                <td>Cada morte próxima aumenta o dano; cura o usuário por % do dano causado.</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Outro Você (Forgotten Spire)</strong></td>
+                                <td style="color: var(--accent);">Fragmento da Espiral (Relíquia)</td>
+                                <td class="lore-text">Sua forma original, que criou a Espiral — agora libera fragmento de poder.</td>
+                                <td class="drop-chance">1% (Único)</td>
+                                <td>Desbloqueia finais e oferece transformação poderosa — custo alto em identidades.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="cards-grid" style="margin-top: 3rem;">
+                    <div class="card fade-in">
+                        <h3>Guardião das Marés</h3>
+                        <p><strong>Localização:</strong> Ruínas Abissais<br>
+                        <strong>Fases:</strong> Tridente terrestre → Paredões de água → Forma aquática final<br>
+                        <strong>Mecânica especial:</strong> Derrotá-lo altera permanentemente o nível das águas em todo o mundo, abrindo novas áreas e fechando outras.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Rei de Sangue</h3>
+                        <p><strong>Localização:</strong> Crimson Bastion<br>
+                        <strong>História:</strong> General traído que absorve espectros de soldados mortos<br>
+                        <strong>Consequência:</strong> Sua morte libera todos os espectros, que se espalham pelo mundo como NPCs neutros ou hostis.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Outro Você</h3>
+                        <p><strong>Localização:</strong> Forgotten Spire (Final)<br>
+                        <strong>Mecânica única:</strong> Boss adapta-se baseado nas memórias que você coletou<br>
+                        <strong>Fases dinâmicas:</strong> Cada fase representa uma escolha moral que você fez, criando uma experiência única por playthrough.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Dama das Flores Mortas</h3>
+                        <p><strong>Localização:</strong> Garden of Silence<br>
+                        <strong>Habilidade especial:</strong> Invoca plantas carnívoras que persistem no mundo após sua morte<br>
+                        <strong>Segredo:</strong> Pode ser salva em vez de morta, alterando completamente o final do jogo.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Serpente Dracônica</h3>
+                        <p><strong>Localização:</strong> Floresta do Crepúsculo<br>
+                        <strong>Ciclo dia/noite:</strong> Mais fraca durante o dia, forma completa à noite<br>
+                        <strong>Impacto:</strong> Sua morte elimina o ciclo dia/noite da floresta, congelando-a no crepúsculo eterno.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Strategies & Tips</h3>
+                        <p><strong>Absorção de Ecos:</strong> Cada boss derrotado deixa ecos únicos que alteram suas habilidades<br>
+                        <strong>Ordem importa:</strong> A sequência de bosses derrotados afeta as mecânicas dos bosses restantes<br>
+                        <strong>Memórias ocultas:</strong> Bosses possuem memórias secretas acessíveis apenas com certas condições.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- GAMEPLAY PAGE -->
+        <div id="gameplay" class="page">
+            <section class="content-section">
+                <h2 class="section-title">GAMEPLAY - Mecânicas e Sistemas</h2>
+                
+                <div class="cards-grid">
+                    <div class="card fade-in">
+                        <h3>Sistema de Ecos</h3>
+                        <p>Absorva memórias de inimigos derrotados para desbloquear novas habilidades. Cada eco carrega parte da história do mundo e pode ser combinado para efeitos únicos. Ecos mais raros revelam segredos sobre a Espiral dos Deuses.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Combate Skill-Based</h3>
+                        <p>Sistema focado em timing, posicionamento e leitura de padrões inimigos. Sem níveis tradicionais - a progressão vem do domínio das mecânicas e da absorção estratégica de ecos. Cada arma possui movesets únicos.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Mundo Reativo</h3>
+                        <p>Suas ações têm consequências permanentes. Derrotar bosses altera áreas, NPCs podem morrer ou mudar baseado em suas escolhas, e diferentes caminhos se abrem ou fecham conforme suas decisões.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Exploração Não-Linear</h3>
+                        <p>O mundo está conectado como uma espiral - você pode acessar áreas avançadas cedo se tiver habilidade suficiente. Múltiplos caminhos para cada área incentivam exploração e replayability.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>NPCs Dinâmicos</h3>
+                        <p>Personagens não-jogáveis possuem suas próprias agendas e podem ajudar ou atrapalhar baseado em suas ações passadas. Alguns NPCs podem se tornar inimigos ou aliados dependendo da narrativa.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Sistema de Memórias</h3>
+                        <p>Colete fragmentos de memória espalhados pelo mundo para reconstruir a história completa. Memórias afetam diálogos, abrem caminhos secretos e influenciam o boss final "Outro Você".</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Crafting de Ecos</h3>
+                        <p>Combine ecos coletados para criar habilidades personalizadas. Sistema profundo permite milhares de combinações diferentes, cada uma alterando seu estilo de jogo e aproximação aos desafios.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Finais Múltiplos</h3>
+                        <p>Três finais principais baseados em suas escolhas ao longo da jornada:<br>
+                        • <strong>Aceitar a Espiral:</strong> Torne-se guardião<br>
+                        • <strong>Quebrar a Espiral:</strong> Liberte o mundo<br>
+                        • <strong>Eco Eterno:</strong> Transcenda a humanidade</p>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top: 2rem;">
+                    <h3>Controles & Interface</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; margin-top: 1rem;">
+                        <div>
+                            <h4 style="color: var(--accent); margin-bottom: 0.5rem;">Controles Básicos</h4>
+                            <p style="font-size: 0.9rem;">WASD - Movimento<br>
+                            Mouse - Câmera<br>
+                            Clique Esquerdo - Ataque<br>
+                            Clique Direito - Bloquear<br>
+                            Espaço - Esquiva<br>
+                            E - Interagir/Absorver Eco</p>
+                        </div>
+                        <div>
+                            <h4 style="color: var(--accent); margin-bottom: 0.5rem;">Controles Avançados</h4>
+                            <p style="font-size: 0.9rem;">Shift - Correr<br>
+                            Tab - Inventário<br>
+                            M - Mapa<br>
+                            J - Jornal de Memórias<br>
+                            F - Habilidade Especial<br>
+                            1-4 - Atalhos de Eco</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- STUDIO PAGE -->
+        <div id="studio" class="page">
+            <section class="content-section">
+                <h2 class="section-title">ECLIPSE FOUNDRY - O Studio</h2>
+                
+                <div class="cards-grid">
+                    <div class="card fade-in">
+                        <h3>Sobre a Eclipse Foundry</h3>
+                        <p>Eclipse Foundry é um estúdio independente brasileiro especializado em narrativas sombrias, jogabilidade desafiante e mundos interconectados. Focamos em criar experiências que respeitem a inteligência do jogador.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Nossa Filosofia</h3>
+                        <p>Acreditamos que jogos devem contar histórias profundas através da jogabilidade. Cada mecânica, cada boss, cada área é projetada para servir à narrativa e criar momentos memoráveis para o jogador.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Serviços Oferecidos</h3>
+                        <p>• Desenvolvimento de jogos indie<br>
+                        • Arte conceitual e design<br>
+                        • Sound design e trilha sonora<br>
+                        • Consultoria em game design<br>
+                        • Parcerias e colaborações</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Equipe</h3>
+                        <p>Nossa equipe é composta por profissionais apaixonados por dark fantasy, incluindo designers, programadores, artistas e compositores dedicados a criar experiências únicas.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Projetos Futuros</h3>
+                        <p>Além de SOULS UNTOLD, estamos desenvolvendo expansões do universo da Espiral dos Deuses e explorando novos conceitos em dark fantasy e horror psicológico.</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>Contato</h3>
+                        <p><strong>Email:</strong> contact@eclipsefoundry.studio<br>
+                        <strong>Discord:</strong> <a href="https://discord.gg/f6AEWArRDV" style="color: var(--accent);">Join our server</a><br>
+                        <strong>YouTube:</strong> <a href="https://www.youtube.com/channel/UCqN4yyASl4aiEK9bSnq-hhQ" style="color: var(--accent);">Eclipse Foundry</a><br>
+                        <strong>Twitter/X:</strong> <a href="https://x.com/FoundryStudios" style="color: var(--accent);">@FoundryStudios</a></p>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- NEWS PAGE -->
+        <div id="news" class="page">
+            <section class="content-section">
+                <h2 class="section-title">NEWS & ATUALIZAÇÕES</h2>
+                
+                <div class="cards-grid">
+                    <div class="card fade-in">
+                        <h3>🔥 Atualização 0.9.2 - Crimson Bastion</h3>
+                        <p><strong>Data:</strong> Janeiro 2025<br>
+                        <strong>Novidades:</strong><br>
+                        • Nova região: Crimson Bastion completa<br>
+                        • Boss: Rei de Sangue com 3 fases<br>
+                        • 15 novos NPCs dinâmicos<br>
+                        • Sistema de consequências globais<br>
+                        • 2 novos finais alternativos descobertos</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>📅 Roadmap 2025</h3>
+                        <p><strong>Q1 2025:</strong> Beta fechado com todas as regiões<br>
+                        <strong>Q2 2025:</strong> Sistema de multiplayer assíncrono<br>
+                        <strong>Q3 2025:</strong> Forgotten Spire e boss final<br>
+                        <strong>Q4 2025:</strong> Launch completo + DLC gratuito<br>
+                        <strong>Pós-launch:</strong> Expansões com novas espirais</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>🎮 Demo Disponível</h3>
+                        <p>Teste as primeiras 3 regiões do jogo gratuitamente! A demo inclui:<br>
+                        • Ruínas Abissais completa<br>
+                        • Cidade de Elarion (parcial)<br>
+                        • 2 bosses principais<br>
+                        • Sistema de ecos completo<br>
+                        • Save transferível para versão completa<br>
+                        <strong>Roblox:</strong> <a href="https://www.roblox.com/pt/games/18536212582/BETA-Souls-Untold" style="color: var(--accent);">Jogar Beta</a></p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>🏆 Prêmios & Reconhecimento</h3>
+                        <p><strong>Indie Game Festival 2024:</strong> Melhor Arte Visual<br>
+                        <strong>GameDev Awards:</strong> Narrativa Inovadora<br>
+                        <strong>Steam Next Fest:</strong> Top 10 Mais Wishlisted<br>
+                        <strong>IGN Preview:</strong> "Promete revolucionar o gênero souls-like"</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>🎵 Trilha Sonora</h3>
+                        <p>Parceria com compositor premiado Marcus Vale para trilha sonora dinâmica:<br>
+                        • 40+ faixas originais<br>
+                        • Música adaptativa baseada em ecos coletados<br>
+                        • Temas únicos para cada boss<br>
+                        • Disponível no Spotify e Steam</p>
+                    </div>
+                    
+                    <div class="card fade-in">
+                        <h3>👥 Comunidade</h3>
+                        <p><strong>Discord:</strong> 15.000+ membros ativos<br>
+                        <strong>Subreddit:</strong> r/SoulsUntold - teorias e discussões<br>
+                        <strong>YouTube:</strong> Dev diaries semanais<br>
+                        <strong>Twitch:</strong> Streams de desenvolvimento ao vivo<br>
+                        <strong>Beta Testers:</strong> 500+ jogadores contribuindo<br>
+                        <strong>Roblox Group:</strong> <a href="https://www.roblox.com/pt/communities/16908193/Monster#!/about" style="color: var(--accent);">Join Monster Community</a></p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Eclipse Foundry - SOULS UNTOLD</p>
+            <p>
+                <a href="https://discord.gg/f6AEWArRDV">Discord</a> |
+                <a href="https://x.com/FoundryStudios">Twitter</a> |
+                <a href="https://www.youtube.com/channel/UCqN4yyASl4aiEK9bSnq-hhQ">YouTube</a> |
+                <a href="https://www.roblox.com/pt/games/18536212582/BETA-Souls-Untold">Jogar Beta</a> |
+                <a href="https://www.roblox.com/pt/users/2258406923/profile">Desenvolvedor</a>
+            </p>
+            <p style="font-size: 0.8rem; margin-top: 1rem; color: var(--muted);">
+                Eclipse Foundry é um estúdio independente dedicado a narrativas sombrias e jogabilidade desafiante.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Audio Context for sound effects (no background music)
+        let audioCtx;
+        
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+        }
+
+        // Click sound effect
+        function playClick() {
+            try {
+                initAudio();
+                const now = audioCtx.currentTime;
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(800, now);
+                osc.frequency.exponentialRampToValueAtTime(400, now + 0.1);
+                
+                gain.gain.setValueAtTime(0.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.01, now + 0.2);
+                
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                
+                osc.start(now);
+                osc.stop(now + 0.2);
+            } catch (e) {
+                console.log('Audio blocked');
+            }
+        }
+
+        // Navigation functionality
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update active nav link
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+            
+            // Play click sound
+            playClick();
+            
+            // Restart fade-in animations for the new page
+            const newPageElements = document.getElementById(pageId).querySelectorAll('.fade-in');
+            newPageElements.forEach((el, index) => {
+                el.style.animation = 'none';
+                setTimeout(() => {
+                    el.style.animation = `fadeInUp 0.8s ease forwards`;
+                    el.style.animationDelay = `${index * 0.1}s`;
+                }, 10);
+            });
+        }
+
+        // Initialize fade-in animations on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            fadeElements.forEach((el, index) => {
+                el.style.animationDelay = `${index * 0.1}s`;
+            });
+            
+            // Initialize audio on first user interaction
+            document.addEventListener('click', initAudio, { once: true });
+        });
+
+        // Fog canvas effect
+        function initFogCanvas() {
+            const canvas = document.getElementById('fogCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            
+            function drawFog() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Create multiple layers of subtle fog
+                const time = Date.now() * 0.001;
+                
+                for (let i = 0; i < 3; i++) {
+                    const gradient = ctx.createRadialGradient(
+                        canvas.width * (0.3 + i * 0.2), 
+                        canvas.height * (0.4 + Math.sin(time + i) * 0.1),
+                        0,
+                        canvas.width * (0.3 + i * 0.2),
+                        canvas.height * (0.4 + Math.sin(time + i) * 0.1),
+                        canvas.width * 0.6
+                    );
+                    
+                    gradient.addColorStop(0, `rgba(100, 100, 120, ${0.02 + i * 0.01})`);
+                    gradient.addColorStop(1, 'rgba(0, 0, 0, 0)');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                }
+                
+                requestAnimationFrame(drawFog);
+            }
+            
+            resize();
+            drawFog();
+            window.addEventListener('resize', resize);
+        }
+
+        // Initialize fog effect
+        initFogCanvas();
+
+        // Add click sound to all interactive elements
+        document.addEventListener('click', function(e) {
+            if (e.target.matches('a, button, .card, .nav-link')) {
+                playClick();
+            }
+        });
+    </script>
+</body>
+</html>
